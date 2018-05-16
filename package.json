@@ -1,0 +1,31 @@
+{
+  "name": "node-img-resize",
+  "version": "1.0.0",
+  "description": "Resize images from one folder and store them into a new folder.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webdxd/image-resizer.git"
+  },
+  "keywords": [
+    "image",
+    "resize",
+    "node",
+    "fs",
+    "compress"
+  ],
+  "author": "Yan Hong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/webdxd/image-resizer/issues"
+  },
+  "homepage": "https://github.com/webdxd/image-resizer#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "image-size": "^0.6.2",
+    "resize-img": "^1.1.2"
+  }
+}
