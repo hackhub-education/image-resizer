@@ -2,32 +2,39 @@ const fs = require('fs');
 const resizeImg = require('resize-img');
 const sizeOf = require('image-size');
 const chalk = require('chalk');
+const readline = require('readline');
 
 const origDir = './images/orig/';
 const distDir = './images/dist/';
 
-const distWidth = 1500;
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-console.log(chalk.gray('Image resizer starting...'));
-console.log('Resize to WIDTH =', distWidth, 'px')
+rl.question('What is the desired width that you want in px? ', (distWidth) => {
+    rl.close();
 
-fs.readdir(origDir, (err, files) => {
-    files.forEach(fileName => {
-        
-        console.log(chalk.blue('LOADING: Found', fileName));
+    console.log(chalk.gray('Image resizer starting...'));
+    console.log('Resize to WIDTH =', distWidth, 'px')
 
-        const dimensions = sizeOf(origDir + fileName);
-        const ratio = dimensions.width / dimensions.height;
+    fs.readdir(origDir, (err, files) => {
+        files.forEach(fileName => {
 
-        if (dimensions.width < distWidth) {
-            console.log(chalk.yellow('WARNING:', fileName, 'is smaller than preset size'));
-        }
+            console.log(chalk.blue('LOADING: Found', fileName));
 
-        resizeImg(fs.readFileSync(origDir + fileName), { width: distWidth, height: distWidth / ratio }).then(buf => {
-            fs.writeFileSync(distDir + fileName, buf);
-            console.log(chalk.green('SUCCESS: ', fileName, 'has been resized'));
+            const dimensions = sizeOf(origDir + fileName);
+            const ratio = dimensions.width / dimensions.height;
+
+            if (dimensions.width < distWidth) {
+                console.log(chalk.yellow('WARNING:', fileName, 'is smaller than preset size'));
+            }
+
+            resizeImg(fs.readFileSync(origDir + fileName), { width: distWidth, height: distWidth / ratio }).then(buf => {
+                fs.writeFileSync(distDir + fileName, buf);
+                console.log(chalk.green('SUCCESS: ', fileName, 'has been resized'));
+            });
+
         });
-
-    });
-})
-
+    })
+});
