@@ -15,15 +15,11 @@ if (!fs.existsSync(distDir)){
 const fileName = 'pic1.jpeg';
 
 const { ratio } = dimension(origDir, fileName);
-const distWidth = 128;
+const distWidth = 200;
 
-http.createServer((req, res) => {
-    resizeImg(fs.readFileSync(origDir + fileName), {width: distWidth, height: distWidth / ratio})
-        .then(buf => {
-            fs.writeFileSync(distDir + fileName, buf);
-            res.write(buf); //write a response to the client
-            res.end(); //end the response
-        });
-}).listen(8080); //the server object listens on port 8080
+resizeImg(fs.readFileSync(origDir + fileName), {width: distWidth, height: distWidth / ratio})
+    .then(buf => {
+        fs.writeFileSync(distDir + fileName, buf);
+    });
   
 
