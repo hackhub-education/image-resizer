@@ -16,4 +16,3 @@ resizeImg(fs.readFileSync(origDir + fileName), { width: 128, height: 128 })
     .then(buf => {
         fs.writeFileSync(distDir + fileName, buf);
     });
-console.log(new Buffer(10));
