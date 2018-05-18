@@ -12,29 +12,16 @@ if (!fs.existsSync(distDir)){
     fs.mkdirSync(distDir);
 }
 
-const fileName = 'pic1.jpeg';
+const distWidth = 300;
 
-const { ratio } = dimension(origDir, fileName);
-const distWidth = 128;
-
-http.createServer((req, res) => {
-    res.write('<html><body>')
-    fs.readdir(origDir, (err, files) => {
-        files.forEach((fileName, i) => {
-            resizeImg(fs.readFileSync(origDir + fileName), {width: distWidth, height: distWidth / ratio})
-                .then(buf => {
-                    fs.writeFileSync(distDir + fileName, buf);
-                    res.write('<img src="data:image/jpeg;base64,');
-                    res.write(Buffer.from(buf).toString('base64'));
-                    res.write('"/>');
-
-                    // end the response when the last image has been wirtten
-                    if(i === files.length -1) {
-                        res.end('</body></html>');
-                    }
-                });
-        })
-    });
-}).listen(8080); //the server object listens on port 8080
+fs.readdir(origDir, (err, files) => {
+    files.forEach((fileName, i) => {
+        const { ratio } = dimension(origDir, fileName);
+        resizeImg(fs.readFileSync(origDir + fileName), {width: distWidth, height: distWidth / ratio})
+            .then(buf => {
+                fs.writeFileSync(distDir + fileName, buf);
+            });
+    })
+});
   
 
