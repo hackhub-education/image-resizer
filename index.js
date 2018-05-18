@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const resizeImg = require('resize-img');
-const sizeOf = require('image-size');
 
+const dimension = require('./dimension');
 const origDir = path.join(__dirname, '/images/orig/');
 const distDir = path.join(__dirname, '/images/dist/');
 
@@ -14,9 +14,7 @@ if (!fs.existsSync(distDir)){
 
 const fileName = 'pic1.jpeg';
 
-// get dimensions of image
-const dimensions = sizeOf(origDir + fileName);
-const ratio = dimensions.width / dimensions.height;
+const { ratio } = dimension(origDir, fileName);
 const distWidth = 128;
 
 http.createServer((req, res) => {
@@ -26,6 +24,6 @@ http.createServer((req, res) => {
             res.write(buf); //write a response to the client
             res.end(); //end the response
         });
-  }).listen(8080); //the server object listens on port 8080
+}).listen(8080); //the server object listens on port 8080
   
 
