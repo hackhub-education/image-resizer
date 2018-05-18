@@ -16,7 +16,9 @@ const distWidth = 300;
 
 fs.readdir(origDir, (err, files) => {
     files.forEach((fileName, i) => {
+
         const { ratio } = dimension(origDir, fileName);
+        
         resizeImg(fs.readFileSync(origDir + fileName), {width: distWidth, height: distWidth / ratio})
             .then(buf => {
                 fs.writeFileSync(distDir + fileName, buf);
