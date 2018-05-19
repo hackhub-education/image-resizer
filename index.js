@@ -6,8 +6,8 @@ const chalk = require('chalk');
 const readline = require('readline');
 
 const dimension = require('./dimension');
-const origDir = path.join(__dirname, '../../images/orig/');
-const distDir = path.join(__dirname, '../../images/dist/');
+const origDir = '../../images/orig/';
+const distDir = '../../images/dist/';
 
 // create dist folder if it doesn't exist
 if (!fs.existsSync(distDir)){
