@@ -6,18 +6,18 @@ const chalk = require('chalk');
 const readline = require('readline');
 
 const dimension = require('./dimension');
-const origDir = path.join(__dirname, '/images/orig/');
-const distDir = path.join(__dirname, '/images/dist/');
+const origDir = path.join(__dirname, '../../images/orig/');
+const distDir = path.join(__dirname, '../../images/dist/');
 
 // create dist folder if it doesn't exist
 if (!fs.existsSync(distDir)){
     fs.mkdirSync(distDir);
 }
 
-console.log(chalk.gray('Image resizer starting...'));
-console.log('Resize to WIDTH =', distWidth, 'px')
-
 module.exports = (distWidth) => {
+    console.log(chalk.gray('Image resizer starting...'));
+    console.log('Resize to WIDTH =', distWidth, 'px');
+
     fs.readdir(origDir, (err, files) => {
         files.forEach((fileName, i) => {
     
