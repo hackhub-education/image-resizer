@@ -1,6 +1,6 @@
 {
   "name": "node-img-resizer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Resize images from one folder and store them into a new folder.",
   "main": "index.js",
   "scripts": {
