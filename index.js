@@ -1,40 +1,35 @@
 const fs = require('fs');
+const path = require('path');
+const http = require('http');
 const resizeImg = require('resize-img');
-const sizeOf = require('image-size');
 const chalk = require('chalk');
 const readline = require('readline');
 
-const origDir = './images/orig/';
-const distDir = './images/dist/';
+const dimension = require('./dimension');
+const origDir = path.join(__dirname, '../../images/orig/');
+const distDir = path.join(__dirname, '../../images/dist/');
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+// create dist folder if it doesn't exist
+if (!fs.existsSync(distDir)){
+    fs.mkdirSync(distDir);
+}
 
-rl.question('What is the desired width that you want in px? ', (distWidth) => {
-    rl.close();
-
+module.exports = (distWidth) => {
     console.log(chalk.gray('Image resizer starting...'));
-    console.log('Resize to WIDTH =', distWidth, 'px')
+    console.log('Resize to WIDTH =', distWidth, 'px');
 
     fs.readdir(origDir, (err, files) => {
-        files.forEach(fileName => {
-
+        files.forEach((fileName, i) => {
+    
             console.log(chalk.blue('LOADING: Found', fileName));
-
-            const dimensions = sizeOf(origDir + fileName);
-            const ratio = dimensions.width / dimensions.height;
-
-            if (dimensions.width < distWidth) {
-                console.log(chalk.yellow('WARNING:', fileName, 'is smaller than preset size'));
-            }
-
-            resizeImg(fs.readFileSync(origDir + fileName), { width: distWidth, height: distWidth / ratio }).then(buf => {
-                fs.writeFileSync(distDir + fileName, buf);
-                console.log(chalk.green('SUCCESS: ', fileName, 'has been resized'));
-            });
-
-        });
-    })
-});
+    
+            const { ratio } = dimension(origDir, fileName);
+            
+            resizeImg(fs.readFileSync(origDir + fileName), {width: distWidth, height: distWidth / ratio})
+                .then(buf => {
+                    fs.writeFileSync(distDir + fileName, buf);
+                    console.log(chalk.green('SUCCESS: ', fileName, 'has been resized'));
+                });
+        })
+    });
+}
